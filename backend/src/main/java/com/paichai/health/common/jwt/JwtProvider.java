@@ -10,12 +10,17 @@ import java.util.Date;
 
 @Component
 public class JwtProvider {
+	
 	// 토큰 발급 메서드
     private final SecretKey key = Keys.hmacShaKeyFor(
         "YourSecretKeyYourSecretKeyYourSecretKey".getBytes(StandardCharsets.UTF_8)
     );
     private final long validityMs = 3600000; // 토큰 만료 기간(1시간)
 
+    public SecretKey getKey() {
+        return key;
+    }
+    
     public String createToken(String email, String roleId) {
         Date now = new Date(); // 토큰 발급 시각 설정
         return Jwts.builder()
