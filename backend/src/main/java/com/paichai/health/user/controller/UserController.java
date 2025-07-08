@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.paichai.health.user.dto.LoginRequest;
 import com.paichai.health.user.dto.LoginResponse;
 import com.paichai.health.user.service.UserService;
+import com.paichai.health.user.dto.UserRequest;
+
 
 import lombok.RequiredArgsConstructor;
 
@@ -44,5 +46,13 @@ public class UserController {
         );
         return ResponseEntity.ok(result);
     }
-    
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@RequestBody UserRequest req) {
+        try {
+            userService.register(req);
+            return ResponseEntity.ok("회원가입 성공");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body("회원가입 실패: " + e.getMessage());
+        }
+    }
 }
