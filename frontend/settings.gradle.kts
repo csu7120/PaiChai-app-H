@@ -19,5 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "PaiChaiFront"
+rootProject.name = "HealthHelper"
 include(":app")
+ 
