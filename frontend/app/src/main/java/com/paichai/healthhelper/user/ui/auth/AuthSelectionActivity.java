@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.paichai.healthhelper.R;
 import com.paichai.healthhelper.user.ui.login.LoginActivity;
-import com.paichai.healthhelper.user.ui.signup.SignupActivity;
 
 public class AuthSelectionActivity extends AppCompatActivity {
     @Override
@@ -26,11 +25,5 @@ public class AuthSelectionActivity extends AppCompatActivity {
             }
         });
 
-        btnSignup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(AuthSelectionActivity.this, SignupActivity.class));
-            }
-        });
     }
 }
