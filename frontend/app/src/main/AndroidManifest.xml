@@ -25,11 +25,11 @@
         </activity>
 
         <activity
-            android:name=".user.ui.login.LoginActivity"
-            android:exported="true" />
-
+            android:name=".user.ui.main.TrainerMainActivity" />
         <activity
-            android:name=".user.ui.signup.SignupActivity"
+            android:name=".user.ui.main.UserMainActivity" />
+        <activity
+            android:name=".user.ui.login.LoginActivity"
             android:exported="true" />
 
         <activity
