@@ -23,6 +23,7 @@ public class UserService {
     private final JwtProvider jwtProvider;
     private final PasswordEncoder passwordEncoder;  
 
+    // 로그인
     public LoginResponse login(LoginRequest req) {
         User user = userRepo.findByEmail(req.getEmail())
             .orElseThrow(() -> new RuntimeException("사용자 없음"));
@@ -34,6 +35,8 @@ public class UserService {
         String token = jwtProvider.createToken(user.getEmail(), user.getRole().getRoleId());
         return new LoginResponse("로그인 성공", user.getRole().getRoleId(), token);
     }
+    
+    // 회원가입
     public void register(UserRequest req) {
         if (userRepo.findByEmail(req.getEmail()).isPresent()) {
             throw new RuntimeException("이미 등록된 이메일입니다.");
