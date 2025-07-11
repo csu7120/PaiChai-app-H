@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.paichai.health.common.jwt.JwtProvider;
 import com.paichai.health.user.dto.LoginRequest;
 import com.paichai.health.user.dto.LoginResponse;
+import com.paichai.health.user.dto.ProfileResponse;
 import com.paichai.health.user.service.UserService;
 import com.paichai.health.user.dto.UserRequest;
 import com.paichai.health.user.entity.User;
@@ -47,24 +48,18 @@ public class UserController {
         LoginResponse resp = new LoginResponse(
             "로그인 성공",
             user.getRole().getRoleId(),
-            token
+            token,
+            user.getName()
         );
         
         return ResponseEntity.ok(resp);
     }
     
     @GetMapping("/me")
-    public ResponseEntity<Map<String,String>> profile(
-            Authentication authentication
-    ) {
-        String email = authentication.getName();
-        String roles = authentication.getAuthorities().toString();
-        Map<String,String> result = Map.of(
-            "email", email,
-            "roles", roles
-            
-        );
-        return ResponseEntity.ok(result);
+    public ResponseEntity<ProfileResponse> profile(Authentication authentication) {
+        
+        ProfileResponse dto = userService.getProfile(authentication.getName());
+        return ResponseEntity.ok(dto);
     }
     
     @PostMapping("/register")

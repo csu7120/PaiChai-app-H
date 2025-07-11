@@ -55,11 +55,12 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                             if (response.isSuccessful() && response.body() != null) {
+                                String name  = response.body().getName();
                                 String role = response.body().getRoleId();
                                 String token = response.body().getToken();
 
                                 // 토큰 저장 (예: SharedPreferences)
-                                saveToken(token, role);
+                                saveToken(token, role, name);
 
                                 // role 에 따라 화면 분기
                                 if ("TRAINER".equals(role)) {
@@ -88,11 +89,12 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void saveToken(String token, String role) {
+    private void saveToken(String token, String role, String name) {
         getSharedPreferences("prefs", MODE_PRIVATE)
                 .edit()
                 .putString("AUTH_TOKEN", token)
                 .putString("ROLE_ID", role)
+                .putString("TRAINER_NAME", name)
                 .apply();
     }
 

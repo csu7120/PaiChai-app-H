@@ -11,6 +11,7 @@ import com.paichai.health.user.dto.LoginResponse;
 import com.paichai.health.user.dto.UserRequest;
 import com.paichai.health.user.entity.User;
 import com.paichai.health.user.repository.UserRepository;
+import com.paichai.health.user.dto.ProfileResponse;
 
 
 import lombok.RequiredArgsConstructor;
@@ -29,11 +30,11 @@ public class UserService {
             .orElseThrow(() -> new RuntimeException("사용자 없음"));
 
         if (!passwordEncoder.matches(req.getPassword(), user.getPassword())) {
-            return new LoginResponse("비밀번호 불일치", null, null);
+            return new LoginResponse("비밀번호 불일치", null, null, null);
         }
 
         String token = jwtProvider.createToken(user.getEmail(), user.getRole().getRoleId());
-        return new LoginResponse("로그인 성공", user.getRole().getRoleId(), token);
+        return new LoginResponse("로그인 성공", user.getRole().getRoleId(), token, user.getName());
     }
     
     // 회원가입
@@ -55,5 +56,18 @@ public class UserService {
             .build();
 
         userRepo.save(user);
+    }
+    
+    // 유저 정보 조회(일반 유저 / 트레이너 조회)
+    public ProfileResponse getProfile(String email) {
+        User user = userRepo.findByEmail(email)
+            .orElseThrow(() -> new RuntimeException("사용자 없음"));
+        return new ProfileResponse(
+            user.getEmail(),
+            user.getRole().getRoleId(),
+            user.getName(),
+            user.getPhone(),
+            user.getProfileUrl()
+        );
     }
 }
