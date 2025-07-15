@@ -3,6 +3,15 @@ package com.paichai.healthhelper.user.model;
 import com.google.gson.annotations.SerializedName;
 
 public class LoginResponse {
+    private int userId;
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
     @SerializedName("token")
     private String token;

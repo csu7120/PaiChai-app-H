@@ -1,6 +1,7 @@
 package com.paichai.healthhelper.user.ui.login;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -8,20 +9,16 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.paichai.healthhelper.R;
-import com.paichai.healthhelper.user.api.ApiClient;
+import com.paichai.healthhelper.common.api.ApiClient;
 import com.paichai.healthhelper.user.api.UserApi;
 import com.paichai.healthhelper.user.model.LoginRequest;
 import com.paichai.healthhelper.user.model.LoginResponse;
 import com.paichai.healthhelper.user.ui.main.TrainerMainActivity;
 import com.paichai.healthhelper.user.ui.main.UserMainActivity;
 
-import org.json.JSONObject;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText etEmail, etPassword;
@@ -38,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.etPassword);
         btnLogin   = findViewById(R.id.btnLogin);
 
-        userApi = ApiClient.getUserApi();
+        userApi = ApiClient.getUserApi(this);
 
         btnLogin.setOnClickListener(v -> {
             String email = etEmail.getText().toString().trim();
@@ -58,9 +55,10 @@ public class LoginActivity extends AppCompatActivity {
                                 String name  = response.body().getName();
                                 String role = response.body().getRoleId();
                                 String token = response.body().getToken();
+                                int userId = response.body().getUserId();
 
-                                // 토큰 저장 (예: SharedPreferences)
-                                saveToken(token, role, name);
+                                // 토큰 저장
+                                saveToken(token, role, name, userId);
 
                                 // role 에 따라 화면 분기
                                 if ("TRAINER".equals(role)) {
@@ -89,13 +87,22 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void saveToken(String token, String role, String name) {
-        getSharedPreferences("prefs", MODE_PRIVATE)
-                .edit()
-                .putString("AUTH_TOKEN", token)
-                .putString("ROLE_ID", role)
-                .putString("TRAINER_NAME", name)
-                .apply();
+    private void saveToken(String token, String role, String name, int userId) {
+        SharedPreferences.Editor editor = getSharedPreferences("prefs", MODE_PRIVATE).edit();
+
+        editor.putString("AUTH_TOKEN", token);
+        editor.putString("ROLE_ID", role);
+
+        if ("TRAINER".equals(role)) {
+            editor.putString("TRAINER_NAME", name);
+            editor.putInt("TRAINER_ID", userId);
+
+        } else {
+            editor.putString("USER_NAME", name);
+            editor.putInt("USER_ID", userId);
+        }
+
+        editor.apply();
     }
 
     // 로그인 실패시 오류 메세지

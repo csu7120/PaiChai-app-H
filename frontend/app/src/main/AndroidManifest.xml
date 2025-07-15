@@ -32,6 +32,9 @@
             android:name=".user.ui.login.LoginActivity"
             android:exported="true" />
 
+        <!-- PT 수락/거절 알림창-->
+        <activity android:name=".trainerclientrequest.ui.TrainerRequestListActivity" />
+
         <activity
             android:name=".MainActivity"
             android:exported="false" />

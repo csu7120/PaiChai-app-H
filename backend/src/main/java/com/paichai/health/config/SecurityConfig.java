@@ -21,6 +21,8 @@ import com.paichai.health.user.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 
 import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.PATCH;
 
 @Configuration
 @EnableWebSecurity
@@ -63,8 +65,10 @@ public class SecurityConfig {
           .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
           .authorizeHttpRequests(auth -> auth
-              .requestMatchers(POST, "/api/users/login", "/api/users/register").permitAll()
-              .anyRequest().authenticated()
+        		    .requestMatchers(POST, "/api/users/login", "/api/users/register").permitAll()
+        		    .requestMatchers(GET, "/api/trainer-request/**").authenticated()
+        		    .requestMatchers(PATCH, "/api/trainer-request/**").authenticated()
+        		    .anyRequest().authenticated()
           );
 
         // JWT 인증 필터
