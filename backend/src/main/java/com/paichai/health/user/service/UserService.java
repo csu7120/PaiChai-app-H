@@ -30,11 +30,11 @@ public class UserService {
             .orElseThrow(() -> new RuntimeException("사용자 없음"));
 
         if (!passwordEncoder.matches(req.getPassword(), user.getPassword())) {
-            return new LoginResponse("비밀번호 불일치", null, null, null);
+            return new LoginResponse("비밀번호 불일치", null, null, null, -1);
         }
 
         String token = jwtProvider.createToken(user.getEmail(), user.getRole().getRoleId());
-        return new LoginResponse("로그인 성공", user.getRole().getRoleId(), token, user.getName());
+        return new LoginResponse("로그인 성공", user.getRole().getRoleId(), token, user.getName(), user.getUserId());
     }
     
     // 회원가입

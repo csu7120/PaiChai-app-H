@@ -1,7 +1,17 @@
 package com.paichai.healthhelper.user.model;
 
 public class ProfileResponse {
+    private int userId;
     private String email;
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
     private String roleId;
     private String name;
     private String phone;

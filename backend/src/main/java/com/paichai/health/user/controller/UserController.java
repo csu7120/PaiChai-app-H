@@ -49,7 +49,8 @@ public class UserController {
             "로그인 성공",
             user.getRole().getRoleId(),
             token,
-            user.getName()
+            user.getName(),
+            user.getUserId()
         );
         
         return ResponseEntity.ok(resp);

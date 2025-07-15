@@ -51,8 +51,17 @@
                 android:textSize="14sp"
                 android:textColor="@android:color/white" />
         </LinearLayout>
-
-
+        <!-- 알림 버튼 -->
+        <Button
+            android:id="@+id/btnTrainerRequestAlert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="알림"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@android:color/holo_orange_light"
+            android:layout_gravity="center_vertical"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="6dp"/>
     </LinearLayout>
 
     <!-- 빈 공간 : 미정-->

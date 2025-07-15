@@ -8,6 +8,7 @@ import lombok.Data;
 public class LoginResponse {
     private String message;
     private String roleId;
-    private String token;  // 토큰 단계 시 채워짐
+    private String token;
     private String name;
+    private int userId;
 }
