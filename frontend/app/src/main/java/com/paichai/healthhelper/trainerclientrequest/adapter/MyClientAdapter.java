@@ -16,9 +16,11 @@ import java.util.List;
 public class MyClientAdapter extends RecyclerView.Adapter<MyClientAdapter.ClientViewHolder> {
 
     private List<TrainerClientRequestResponse> clientList;
+    private int trainerId;
 
-    public MyClientAdapter(List<TrainerClientRequestResponse> clientList) {
+    public MyClientAdapter(List<TrainerClientRequestResponse> clientList, int trainerId) {
         this.clientList = clientList;
+        this.trainerId  = trainerId;
     }
 
     @NonNull
@@ -33,6 +35,7 @@ public class MyClientAdapter extends RecyclerView.Adapter<MyClientAdapter.Client
     public void onBindViewHolder(@NonNull ClientViewHolder holder, int position) {
         TrainerClientRequestResponse client = clientList.get(position);
         holder.tvName.setText(client.getClientName());
+
 
     }
 

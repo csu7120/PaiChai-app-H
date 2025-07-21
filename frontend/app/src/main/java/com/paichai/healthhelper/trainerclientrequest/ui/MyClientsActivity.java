@@ -36,7 +36,7 @@ public class MyClientsActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerViewClients);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new MyClientAdapter(myClients);
+        adapter = new MyClientAdapter(myClients, trainerId);
         recyclerView.setAdapter(adapter);
 
         loadMyClients(trainerId);

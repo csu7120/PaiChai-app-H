@@ -1,6 +1,7 @@
 package com.paichai.healthhelper.trainerclientrequest.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import com.paichai.healthhelper.R;
 import com.paichai.healthhelper.common.api.ApiClient;
+import com.paichai.healthhelper.ptsession.ui.PtRegisterActivity;
 import com.paichai.healthhelper.trainerclientrequest.api.TrainerClientRequestApi;
 import com.paichai.healthhelper.trainerclientrequest.model.TrainerClientRequest;
 import com.paichai.healthhelper.trainerclientrequest.model.TrainerClientRequestStatusUpdateRequest;
@@ -26,9 +28,11 @@ import retrofit2.Response;
 public class TrainerRequestAdapter extends RecyclerView.Adapter<TrainerRequestAdapter.RequestViewHolder> {
     // List, Array의 데이터를 가져와서 인덱스마다 하나의 데이터로 변환
     private List<TrainerClientRequest> requestList;
+    private int trainerId;
 
-    public TrainerRequestAdapter(List<TrainerClientRequest> requestList) {
+    public TrainerRequestAdapter(List<TrainerClientRequest> requestList, int trainerId) {
         this.requestList = requestList;
+        this.trainerId   = trainerId;
     }
 
     @NonNull
@@ -50,7 +54,12 @@ public class TrainerRequestAdapter extends RecyclerView.Adapter<TrainerRequestAd
 
         // 수락 버튼
         holder.btnAccept.setOnClickListener(v -> {
-            updateStatus(holder.itemView.getContext(), request.getRequestId(), "ACCEPTED", position);
+            Context ctx = v.getContext();
+            Intent intent = new Intent(ctx, PtRegisterActivity.class);
+            intent.putExtra("trainerId", trainerId);          // 어댑터 필드
+            intent.putExtra("clientId",  request.getClientId()); // 요청 DTO 에서 clientId 꺼내기
+            intent.putExtra("requestId",  request.getRequestId());
+            ctx.startActivity(intent);
         });
 
         // 거절 버튼
