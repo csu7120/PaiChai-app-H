@@ -7,3 +7,4 @@ public class TrainerClientRequestStatusUpdateRequest { // 요청 수락·거절 
 	private String status; // ACCEPTED or REJECTED
 	
 }
+

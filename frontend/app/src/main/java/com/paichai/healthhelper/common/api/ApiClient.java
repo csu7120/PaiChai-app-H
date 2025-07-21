@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.paichai.healthhelper.user.api.UserApi;
+import com.paichai.healthhelper.trainerclientrequest.api.TrainerClientRequestApi;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -18,6 +19,10 @@ public class ApiClient {
 
     public static UserApi getUserApi(Context context) {
         return getInstance(context).create(UserApi.class);
+    }
+
+    public static TrainerClientRequestApi getTrainerClientRequestApi(Context context) {
+        return getInstance(context).create(TrainerClientRequestApi.class);
     }
 
     public static Retrofit getInstance(Context context) {
