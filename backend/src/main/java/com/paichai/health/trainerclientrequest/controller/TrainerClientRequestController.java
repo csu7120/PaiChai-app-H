@@ -46,4 +46,6 @@ public class TrainerClientRequestController {
         List<TrainerClientRequestResponse> response = trainerClientRequestService.getAcceptedClients(trainerId);
         return ResponseEntity.ok(response);
     }
+    
+    
 }

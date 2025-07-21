@@ -24,6 +24,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class TrainerRequestAdapter extends RecyclerView.Adapter<TrainerRequestAdapter.RequestViewHolder> {
+    // List, Array의 데이터를 가져와서 인덱스마다 하나의 데이터로 변환
     private List<TrainerClientRequest> requestList;
 
     public TrainerRequestAdapter(List<TrainerClientRequest> requestList) {
@@ -33,6 +34,7 @@ public class TrainerRequestAdapter extends RecyclerView.Adapter<TrainerRequestAd
     @NonNull
     @Override
     public RequestViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        // 하나의 아이템 객체화
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_trainer_request, parent, false);
         return new RequestViewHolder(view);
@@ -40,6 +42,8 @@ public class TrainerRequestAdapter extends RecyclerView.Adapter<TrainerRequestAd
 
     @Override
     public void onBindViewHolder(@NonNull RequestViewHolder holder, int position) {
+        // 데이터 값을 화면에 붙이는 역할
+
         TrainerClientRequest request = requestList.get(position);
         holder.tvClientName.setText(request.getClientName());
         holder.tvRequestStatus.setText(request.getStatus());
@@ -56,7 +60,7 @@ public class TrainerRequestAdapter extends RecyclerView.Adapter<TrainerRequestAd
     }
     
     @Override
-    public int getItemCount() {
+    public int getItemCount() { // 객체화 된 아이템 개수 카운트
         return requestList != null ? requestList.size() : 0;
     }
 
