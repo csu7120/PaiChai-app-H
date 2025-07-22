@@ -1,0 +1,31 @@
+package com.paichai.health.routine.dto;
+
+import com.paichai.health.routine.entity.Routine;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class RoutineResponse {
+    private Integer routineId;
+    private Integer authorId;
+    private String title;
+    private String description;
+    private LocalDateTime createdAt;
+
+    public static RoutineResponse fromEntity(Routine routine) {
+        return RoutineResponse.builder()
+                .routineId(routine.getRoutineId())
+                .authorId(routine.getAuthorId())
+                .title(routine.getTitle())
+                .description(routine.getDescription())
+                .createdAt(routine.getCreatedAt())
+                .build();
+    }
+}

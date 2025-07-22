@@ -1,5 +1,7 @@
 package com.paichai.health.routine.repository;
 
-public class RoutineRepository {
+import com.paichai.health.routine.entity.Routine;
+import org.springframework.data.jpa.repository.JpaRepository;
 
+public interface RoutineRepository extends JpaRepository<Routine, Integer> {
 }

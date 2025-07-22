@@ -1,0 +1,49 @@
+package com.paichai.health.routine.service;
+
+import com.paichai.health.routine.dto.RoutineRequest;
+import com.paichai.health.routine.dto.RoutineResponse;
+import com.paichai.health.routine.entity.Routine;
+import com.paichai.health.routine.repository.RoutineRepository;
+import com.paichai.health.routine_exercise_part.entity.RoutineExercisePart;
+import com.paichai.health.routine_exercise_part.repository.RoutineExercisePartRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class RoutineService {
+
+    private final RoutineRepository routineRepository;
+    private final RoutineExercisePartRepository routineExercisePartRepository;
+
+    public RoutineResponse createRoutine(Integer authorId, RoutineRequest request) {
+
+        // ✅ 루틴 저장
+        Routine routine = Routine.builder()
+                .authorId(authorId)
+                .title(request.getTitle())
+                .description(request.getDescription())
+                .createdAt(LocalDateTime.now())
+                .build();
+
+        routine = routineRepository.save(routine);
+
+        // ✅ 선택된 운동부위 저장
+        List<Integer> partIds = request.getExercisePartIds();
+
+        if (partIds != null && !partIds.isEmpty()) {
+            for (Integer partId : partIds) {
+                RoutineExercisePart mapping = RoutineExercisePart.builder()
+                        .routineId(routine.getRoutineId())
+                        .partId(partId)
+                        .build();
+                routineExercisePartRepository.save(mapping);
+            }
+        }
+
+        return RoutineResponse.fromEntity(routine);
+    }
+}

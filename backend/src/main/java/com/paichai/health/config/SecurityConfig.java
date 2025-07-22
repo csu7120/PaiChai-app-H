@@ -3,6 +3,7 @@ package com.paichai.health.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,7 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 
 import com.paichai.health.common.jwt.JwtAuthenticationFilter;
 import com.paichai.health.common.jwt.JwtProvider;
@@ -35,8 +35,8 @@ public class SecurityConfig {
     @Autowired
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
-          .userDetailsService(userDetailsService)
-          .passwordEncoder(passwordEncoder());
+            .userDetailsService(userDetailsService)
+            .passwordEncoder(passwordEncoder());
     }
 
     @Bean
@@ -58,24 +58,26 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-          .authenticationManager(authenticationManager(http))
+        AuthenticationManager authenticationManager = authenticationManager(http);
 
-          .csrf(csrf -> csrf.disable())
-          .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-
-          .authorizeHttpRequests(auth -> auth
-        		    .requestMatchers(POST, "/api/users/login", "/api/users/register").permitAll()
-        		    .requestMatchers(GET, "/api/trainer-request/**").authenticated()
-        		    .requestMatchers(PATCH, "/api/trainer-request/**").authenticated()
-        		    .anyRequest().authenticated()
-          );
-
-        // JWT 인증 필터
+        // ✅ JwtAuthenticationFilter 생성자에 CustomUserDetailsService 추가
         JwtAuthenticationFilter jwtFilter =
-            new JwtAuthenticationFilter(jwtProvider.getKey());
-        http.addFilterBefore(jwtFilter,
-            UsernamePasswordAuthenticationFilter.class);
+            new JwtAuthenticationFilter(jwtProvider.getKey(), authenticationManager, userDetailsService);
+
+        http
+            .authenticationManager(authenticationManager)
+            .csrf(csrf -> csrf.disable())
+            .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers(POST, "/api/users/login", "/api/users/register").permitAll()
+                .requestMatchers(GET, "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/routines").authenticated()
+                .requestMatchers(GET, "/api/trainer-request/**").authenticated()
+                .requestMatchers(GET, "/api/routines/my").authenticated()
+                .requestMatchers(PATCH, "/api/trainer-request/**").authenticated()
+                .anyRequest().authenticated()
+            )
+            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

@@ -1,0 +1,23 @@
+package com.paichai.health.exercise_part.dto;
+
+import com.paichai.health.exercise_part.entity.ExercisePart;
+import lombok.*;
+
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class ExercisePartResponse {
+
+    private Integer partId;
+    private String name;
+    private String type;
+
+    public static ExercisePartResponse fromEntity(ExercisePart part) {
+        return ExercisePartResponse.builder()
+                .partId(part.getPartId())
+                .name(part.getName())
+                .type(part.getType())
+                .build();
+    }
+}

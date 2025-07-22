@@ -1,0 +1,14 @@
+package com.paichai.health.routine.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import java.time.LocalDateTime;
+
+@Getter
+@AllArgsConstructor
+public class RoutineResponse {
+    private Long routineId;
+    private String title;
+    private String description;
+    private LocalDateTime createdAt;
+}

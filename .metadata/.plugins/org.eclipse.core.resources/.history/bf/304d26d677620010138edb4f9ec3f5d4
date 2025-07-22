@@ -1,0 +1,74 @@
+package com.paichai.health.common.jwt;
+
+import com.paichai.health.user.service.CustomUserDetailsService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import javax.crypto.SecretKey;
+import java.io.IOException;
+
+// JWT 인증 필터
+@RequiredArgsConstructor
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
+    private final SecretKey key; // JWT 비밀키
+    private final CustomUserDetailsService userDetailsService; // 🔥 유저 로딩용 서비스
+
+    private final String HEADER = "Authorization"; // 헤더 이름
+    private final String PREFIX = "Bearer "; // 접두어
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain chain)
+            throws ServletException, IOException {
+        String header = request.getHeader(HEADER);
+
+        if (header != null && header.startsWith(PREFIX)) {
+            String token = header.replace(PREFIX, "");
+
+            try {
+                // JWT 파싱
+                Claims claims = Jwts.parserBuilder()
+                        .setSigningKey(key)
+                        .build()
+                        .parseClaimsJws(token)
+                        .getBody();
+
+                // 토큰에서 이메일(subject) 추출
+                String email = claims.getSubject();
+
+                // 🔥 DB에서 CustomUserDetails 객체 로딩
+                CustomUserDetails userDetails = (CustomUserDetails)
+                        userDetailsService.loadUserByUsername(email);
+
+                // 🔐 사용자 인증 객체 생성
+                UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(
+                                userDetails,
+                                null,
+                                userDetails.getAuthorities()
+                        );
+
+                // 🔐 SecurityContext에 등록
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            } catch (Exception e) {
+                // 토큰이 유효하지 않으면 컨텍스트 초기화
+                SecurityContextHolder.clearContext();
+            }
+        }
+
+        // 다음 필터로 요청 전달
+        chain.doFilter(request, response);
+    }
+}

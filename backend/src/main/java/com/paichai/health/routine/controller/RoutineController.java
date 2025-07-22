@@ -1,5 +1,28 @@
 package com.paichai.health.routine.controller;
 
+import com.paichai.health.routine.dto.*;
+import com.paichai.health.routine.service.RoutineService;
+import com.paichai.health.common.jwt.CustomUserDetails;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+
+@RestController
+@RequestMapping("/api/routines")
+@RequiredArgsConstructor
 public class RoutineController {
 
+    private final RoutineService routineService;
+
+    @PostMapping
+    public ResponseEntity<RoutineResponse> createRoutine(
+            @RequestBody RoutineRequest request,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+
+        Integer authorId = userDetails.getUserId(); 
+        routineService.createRoutine(authorId, request);
+        RoutineResponse response = routineService.createRoutine(authorId, request);
+        return ResponseEntity.ok(response);
+    }
 }

@@ -1,5 +1,30 @@
 package com.paichai.health.routine.entity;
 
-public interface Routine {
+import com.paichai.health.user.entity.User;
+import jakarta.persistence.*;
+import lombok.*;
+import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "routines")
+@Getter @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class Routine {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer routineId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id")
+    private User author;
+
+    
+    
+    private String title;
+    private String description;
+
+    private LocalDateTime createdAt = LocalDateTime.now();
 }

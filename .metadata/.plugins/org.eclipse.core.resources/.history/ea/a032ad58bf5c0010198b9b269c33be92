@@ -1,0 +1,5 @@
+package com.paichai.health.common.jwt;
+
+public class CustomUserDetails {
+
+}

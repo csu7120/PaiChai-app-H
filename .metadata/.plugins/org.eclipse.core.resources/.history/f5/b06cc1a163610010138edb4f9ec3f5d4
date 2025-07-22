@@ -1,0 +1,36 @@
+package com.paichai.health.routine.service;
+
+import com.paichai.health.routine.dto.*;
+import com.paichai.health.routine.entity.Routine;
+import com.paichai.health.routine.repository.RoutineRepository;
+import com.paichai.health.user.entity.User;
+import com.paichai.health.user.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class RoutineService {
+
+    private final RoutineRepository routineRepository;
+    private final UserRepository userRepository;
+
+    public RoutineResponse createRoutine(Integer authorId, RoutineRequest request) {
+        User author = userRepository.findById(authorId)
+                .orElseThrow(() -> new RuntimeException("사용자 없음"));
+
+        Routine routine = new Routine();
+        routine.setAuthor(author);
+        routine.setTitle(request.getTitle());
+        routine.setDescription(request.getDescription());
+
+        Routine saved = routineRepository.save(routine);
+
+        return new RoutineResponse(
+                saved.getRoutineId(),
+                saved.getTitle(),
+                saved.getDescription(),
+                saved.getCreatedAt()
+        );
+    }
+}

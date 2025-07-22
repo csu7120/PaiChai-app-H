@@ -1,0 +1,5 @@
+package com.paichai.health.routine_exercise_part.repository;
+
+public class RoutineExercisePartRepository {
+
+}
