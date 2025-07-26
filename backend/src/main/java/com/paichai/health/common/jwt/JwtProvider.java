@@ -25,9 +25,9 @@ public class JwtProvider {
         Date now = new Date(); // 토큰 발급 시각 설정
         return Jwts.builder()
             .setSubject(email) // 토큰 주체 설정
-            .claim("role", roleId)
-            .setIssuedAt(now)
-            .setExpiration(new Date(now.getTime() + validityMs))
+            .claim("role", roleId) // 토큰에 정보 추가
+            .setIssuedAt(now) // 현재 시각
+            .setExpiration(new Date(now.getTime() + validityMs)) // 만료 시각
             .signWith(key)
             .compact();
     }
