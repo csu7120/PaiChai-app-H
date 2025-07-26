@@ -47,4 +47,9 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
+
+    //이미지 비동기 로드용 Glide 라이브러리
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    //Glide에서 어노테이션 기반 코드 자동 생성 (ViewHolder에 사용 가능)
+    annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
 }

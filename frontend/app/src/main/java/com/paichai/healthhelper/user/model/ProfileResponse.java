@@ -4,6 +4,11 @@ public class ProfileResponse {
     private int userId;
     private String email;
 
+    private String roleId;
+    private String name;
+    private String phone;
+    private String profileUrl;
+
     public int getUserId() {
         return userId;
     }
@@ -11,12 +16,6 @@ public class ProfileResponse {
     public void setUserId(int userId) {
         this.userId = userId;
     }
-
-    private String roleId;
-    private String name;
-    private String phone;
-    private String profileUrl;
-
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
     public String getRoleId() { return roleId; }

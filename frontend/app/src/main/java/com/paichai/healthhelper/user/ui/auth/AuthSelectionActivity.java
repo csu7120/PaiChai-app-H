@@ -16,7 +16,8 @@ public class AuthSelectionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_auth_selection);
 
         Button btnLogin = findViewById(R.id.btnGoLogin);
-        Button btnSignup = findViewById(R.id.btnGoSignup);
+        Button btnGoSignup = findViewById(R.id.btnGoSignup);
+
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -24,6 +25,12 @@ public class AuthSelectionActivity extends AppCompatActivity {
                 startActivity(new Intent(AuthSelectionActivity.this, LoginActivity.class));
             }
         });
+
+        btnGoSignup.setOnClickListener(view -> {
+            Intent intent = new Intent(AuthSelectionActivity.this, SignupActivity.class);
+            startActivity(intent);
+        });
+
 
     }
 }
