@@ -53,6 +53,7 @@ public class UserService {
             .phone(req.getPhone())
             .profileUrl(req.getProfileUrl())
             .role(role)
+            .isInfluencer(false) //인플루언서 확인
             .build();
 
         userRepo.save(user);
