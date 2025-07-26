@@ -1,6 +1,7 @@
 package com.paichai.healthhelper.trainerclientrequest.api;
 
 import com.paichai.healthhelper.trainerclientrequest.model.TrainerClientRequest;
+import com.paichai.healthhelper.trainerclientrequest.model.TrainerClientRequestResponse;
 import com.paichai.healthhelper.trainerclientrequest.model.TrainerClientRequestStatusUpdateRequest;
 
 import java.util.List;
@@ -20,4 +21,8 @@ public interface TrainerClientRequestApi {
             @Path("requestId") int requestId,
             @Body TrainerClientRequestStatusUpdateRequest request
     );
+
+    @GET("/api/trainer-request/clients")
+    Call<List<TrainerClientRequestResponse>> getAcceptedClients(@Query("trainerId") int trainerId);
+
 }

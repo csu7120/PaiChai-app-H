@@ -43,7 +43,7 @@ public class TrainerRequestListActivity extends AppCompatActivity {
                     if (response.body() == null || response.body().isEmpty()) { // 테스트용 : 요청이 하나도 없을 때
                         Toast.makeText(getApplicationContext(), "요청이 없습니다.", Toast.LENGTH_SHORT).show();
                     } else {
-                        adapter = new TrainerRequestAdapter(response.body());
+                        adapter = new TrainerRequestAdapter(response.body(), trainerId);
                         recyclerView.setAdapter(adapter);
                     }
                 } else {
